@@ -1,0 +1,10 @@
+Package: jp.r-plus.cloakstatus
+Name: CloakStatus
+Depends: mobilesubstrate, firmware (>= 4.0), preferenceloader
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Remove status bar items
+Maintainer: r_plus
+Author: r_plus
+Section: Tweaks
+Icon: file:///Library/PreferenceLoader/Preferences/CloakStatus@2x.png
