@@ -8,3 +8,4 @@ Maintainer: r_plus
 Author: r_plus
 Section: Tweaks
 Icon: file:///Library/PreferenceLoader/Preferences/CloakStatus@2x.png
+Conflicts: com.hitoriblog.statusbarcustomclock4
