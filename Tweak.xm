@@ -56,6 +56,7 @@ typedef struct {
 static BOOL isBootup;
 static BOOL isDateTimeStatusBar;
 static NSString *customDateFormat;
+static NSTimer *timer;
 
 static BOOL isTimeEnabled;
 static BOOL isLockEnabled;
@@ -111,6 +112,20 @@ static NSString *kCallForwardKey = @"Indicator:CallForward (Left/Right)";
 static NSString *kActivityKey = @"Activity (Left/Right)";
 static NSString *kThermalColorKey = @"ThermalColor (Left/Right)";
 
+// http://stackoverflow.com/questions/7989864/watching-memory-usage-in-ios
+#import <mach/mach.h>
+
+static inline vm_size_t freeMemory(void) {
+    mach_port_t host_port = mach_host_self();
+    mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    vm_size_t pagesize;
+    vm_statistics_data_t vm_stat;
+
+    host_page_size(host_port, &pagesize);
+    (void) host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
+    return vm_stat.free_count * pagesize;
+}
+
 static inline NSString *IconNameFromItem(UIStatusBarItem *item)
 {
     NSRange range = [[item description] rangeOfString:@"["];
@@ -165,8 +180,24 @@ static inline void SetStatusBarDate(id self, BOOL isContainDate)
     if (!self)
         self = [%c(SBStatusBarDataManager) sharedDataManager];
     NSDateFormatter *dateFormatter = MSHookIvar<NSDateFormatter *>(self, "_timeItemDateFormatter");
-    // default = H:mm
-    [dateFormatter setDateFormat:(isContainDate ? customDateFormat : @"H:mm")];
+    NSRange range = [customDateFormat rangeOfString:@"FM"];
+    if (isContainDate && range.location != NSNotFound) {
+        NSMutableString *memoryReplacedFormat = [[customDateFormat substringToIndex:range.location] mutableCopy];
+        [memoryReplacedFormat appendFormat:@"%3.0f'MB'", freeMemory()/1024.0f/1024.0f];
+        [memoryReplacedFormat appendString:[customDateFormat substringFromIndex:range.location+2]];
+        [dateFormatter setDateFormat:memoryReplacedFormat];
+        [memoryReplacedFormat release];
+        // timer
+        if (!timer)
+            timer = [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(updateTimeStringWithMemory) userInfo:nil repeats:YES];
+    } else {
+        if (timer) {
+            [timer invalidate];
+            timer = nil;
+        }
+        // default = H:mm
+        [dateFormatter setDateFormat:(isContainDate ? customDateFormat : @"H:mm")];
+    }
     [self _updateTimeString];
 }
 
@@ -199,6 +230,12 @@ static inline void SetItemFromString(NSString *string)
 - (void)_configureTimeItemDateFormatter
 {
     %orig;
+    SetStatusBarDate(self, isDateTimeStatusBar);
+}
+
+%new(v@:)
+- (void)updateTimeStringWithMemory
+{
     SetStatusBarDate(self, isDateTimeStatusBar);
 }
 %end

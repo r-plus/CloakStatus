@@ -21,7 +21,7 @@
         <key>label</key>
         <string>DateTimeStatusBar</string>
         <key>footerText</key>
-        <string>Please learn NSDateFormatter.</string>
+        <string>Please learn NSDateFormatter. FreeMemory: FM</string>
       </dict>
       <dict>
         <key>cell</key>
