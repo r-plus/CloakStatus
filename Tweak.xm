@@ -55,6 +55,7 @@ typedef struct {
 
 static BOOL isBootup;
 static BOOL isDateTimeStatusBar;
+static NSString *formatLang;
 static NSString *customDateFormat;
 static NSTimer *timer;
 
@@ -180,6 +181,7 @@ static inline void SetStatusBarDate(id self, BOOL isContainDate)
     if (!self)
         self = [%c(SBStatusBarDataManager) sharedDataManager];
     NSDateFormatter *dateFormatter = MSHookIvar<NSDateFormatter *>(self, "_timeItemDateFormatter");
+    [dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:formatLang] autorelease]];
     NSRange range = [customDateFormat rangeOfString:@"FM"];
     if (isContainDate && range.location != NSNotFound) {
         NSMutableString *memoryReplacedFormat = [[customDateFormat substringToIndex:range.location] mutableCopy];
@@ -274,6 +276,8 @@ static void LoadSettings()
     // DateTimeStatusBar
     id dateTimeStatusBarPref = [dict objectForKey:@"DateTimeStatusBar"];
     isDateTimeStatusBar = dateTimeStatusBarPref ? [dateTimeStatusBarPref boolValue] : YES;
+    id langPref = [dict objectForKey:@"Lang"];
+    formatLang = langPref ? [langPref copy] : @"en_US";
     id customDateFormatPref = [dict objectForKey:@"CustomDateFormat"];
     if (customDateFormat)
         [customDateFormat release];

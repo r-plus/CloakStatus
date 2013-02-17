@@ -1,0 +1,10 @@
+{
+  entry = {
+    bundle = "CloakStatusSettings";
+    cell = PSLinkCell;
+    detail = "CloakStatusPSController";
+    icon = "CloakStatus.png";
+    isController = 1;
+    label = "CloakStatus";
+  };
+}

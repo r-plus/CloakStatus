@@ -39,6 +39,26 @@
       </dict>
       <dict>
         <key>cell</key>
+        <string>PSLinkListCell</string>
+        <key>default</key>
+        <string>en_US</string>
+        <key>defaults</key>
+        <string>jp.r-plus.CloakStatus</string>
+        <key>key</key>
+        <string>Lang</string>
+        <key>label</key>
+        <string>Lang</string>
+        <key>PostNotification</key>
+        <string>jp.r-plus.cloakstatus.settingschanged</string>
+        <key>detail</key>
+        <string>PSListItemsController</string>
+        <key>valuesDataSource</key>
+        <string>locales:</string>
+        <key>titlesDataSource</key>
+        <string>locales:</string>
+      </dict>
+      <dict>
+        <key>cell</key>
         <string>PSEditTextCell</string>
         <key>defaults</key>
         <string>jp.r-plus.CloakStatus</string>
