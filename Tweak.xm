@@ -277,6 +277,8 @@ static void LoadSettings()
     id dateTimeStatusBarPref = [dict objectForKey:@"DateTimeStatusBar"];
     isDateTimeStatusBar = dateTimeStatusBarPref ? [dateTimeStatusBarPref boolValue] : YES;
     id langPref = [dict objectForKey:@"Lang"];
+    if (formatLang)
+        [formatLang release];
     formatLang = langPref ? [langPref copy] : @"en_US";
     id customDateFormatPref = [dict objectForKey:@"CustomDateFormat"];
     if (customDateFormat)
