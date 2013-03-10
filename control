@@ -1,6 +1,6 @@
 Package: jp.r-plus.cloakstatus
 Name: CloakStatus
-Depends: mobilesubstrate, firmware (>= 4.0), preferenceloader
+Depends: mobilesubstrate, firmware (>= 4.0), preferenceloader (>= 2.2.0)
 Version: 1.0
 Architecture: iphoneos-arm
 Description: Remove status bar items
