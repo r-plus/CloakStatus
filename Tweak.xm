@@ -116,7 +116,18 @@ static NSString *kThermalColorKey = @"ThermalColor (Left/Right)";
 // http://stackoverflow.com/questions/7989864/watching-memory-usage-in-ios
 #import <mach/mach.h>
 
-static inline vm_size_t freeMemory(void) {
+#pragma GCC diagnostic ignored "-Wunused-function"
+static inline void log_memories(vm_statistics_data_t *vm_stat, vm_size_t pagesize)
+{
+    NSLog(@"free_count = %fMB", vm_stat->free_count * pagesize / 1024.0f / 1024.0f);
+    NSLog(@"active_count = %fMB", vm_stat->active_count * pagesize / 1024.0f / 1024.0f);
+    NSLog(@"inactive_count = %fMB", vm_stat->inactive_count * pagesize / 1024.0f / 1024.0f);
+    NSLog(@"wire_count = %fMB", vm_stat->wire_count * pagesize / 1024.0f / 1024.0f);
+    NSLog(@"zero_fill_count = %fMB", vm_stat->zero_fill_count * pagesize / 1024.0f / 1024.0f);
+}
+
+static inline vm_size_t freeMemory(void)
+{
     mach_port_t host_port = mach_host_self();
     mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
     vm_size_t pagesize;
@@ -124,7 +135,8 @@ static inline vm_size_t freeMemory(void) {
 
     host_page_size(host_port, &pagesize);
     (void) host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
-    return vm_stat.free_count * pagesize;
+/*    log_memories(&vm_stat, pagesize);*/
+    return (vm_stat.free_count + vm_stat.inactive_count) * pagesize;
 }
 
 static inline NSString *IconNameFromItem(UIStatusBarItem *item)
