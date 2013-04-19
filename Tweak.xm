@@ -141,7 +141,7 @@ static inline vm_size_t freeMemory(void)
 
 static inline NSString *IconNameFromItem(UIStatusBarItem *item)
 {
-    NSRange range = [[item description] rangeOfString:@"["];
+    NSRange range = [[item description] rangeOfString:@"[" options:NSLiteralSearch];
     NSRange iconNameRange;
     iconNameRange.location = range.location + 1;
     iconNameRange.length = [item description].length - range.location - 2;
@@ -194,7 +194,7 @@ static inline void SetStatusBarDate(id self, BOOL isContainDate)
         self = [%c(SBStatusBarDataManager) sharedDataManager];
     NSDateFormatter *dateFormatter = MSHookIvar<NSDateFormatter *>(self, "_timeItemDateFormatter");
     [dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:formatLang] autorelease]];
-    NSRange range = [customDateFormat rangeOfString:@"FM"];
+    NSRange range = [customDateFormat rangeOfString:@"FM" options:NSLiteralSearch];
     if (isContainDate && range.location != NSNotFound) {
         NSMutableString *memoryReplacedFormat = [[customDateFormat substringToIndex:range.location] mutableCopy];
         [memoryReplacedFormat appendFormat:@"%3.0f'MB'", freeMemory()/1024.0f/1024.0f];
