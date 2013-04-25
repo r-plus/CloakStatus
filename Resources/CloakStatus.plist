@@ -125,7 +125,7 @@
         <key>key</key>
         <string>QuietMode:QuietMode (Center)</string>
         <key>label</key>
-        <string>QuietMode</string>
+        <string>Do Not Disturb</string>
         <key>PostNotification</key>
         <string>jp.r-plus.cloakstatus.settingschanged</string>
         <key>pl_filter</key>
