@@ -10,7 +10,7 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 BUNDLE_NAME = CloakStatusSettings
 CloakStatusSettings_FILES = Preference.m
 CloakStatusSettings_INSTALL_PATH = /Library/PreferenceBundles
-CloakStatusSettings_FRAMEWORKS = UIKit 
+# CloakStatusSettings_FRAMEWORKS = UIKit 
 CloakStatusSettings_PRIVATE_FRAMEWORKS = Preferences
 CloakStatusSettings_LIBRARIES = prefs
 
