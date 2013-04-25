@@ -77,7 +77,7 @@ static BOOL isPlusEnabled;
 static BOOL isPlayEnabled;
 static BOOL isLocationEnabled;
 static BOOL isRotationLockEnabled;
-static BOOL isDoubleHeightEnabled;
+//static BOOL isDoubleHeightEnabled;
 static BOOL isAirPlayEnabled;
 static BOOL isSiriEnabled;
 static BOOL isVpnEnabled;
@@ -105,7 +105,7 @@ static NSString *kLocationObsoleteKey = @"Indicator:Location (Right)";// iOS 4
 static NSString *kLocationKey = @"Location (Right)";// iOS 5+
 static NSString *kRotationLockKey = @"Indicator:RotationLock (Right)";
 //static NSString *kRecordingAppKey = @"RecordingApp:RecordingApp (Right)";// iOS 4 only
-static NSString *kDoubleHeightKey = @"DoubleHeight:DoubleHeight (Right)";// iOS 5+
+//static NSString *kDoubleHeightKey = @"DoubleHeight:DoubleHeight (Right)";// iOS 5+
 static NSString *kAirPlayKey = @"Indicator:AirPlay (Right)";// iOS 5+
 static NSString *kSiriKey = @"Indicator:Siri (Right)";// iOS 6+
 static NSString *kVpnKey = @"Indicator:VPN (Left/Right)";
@@ -177,7 +177,7 @@ static inline BOOL isDisabledStatus(UIStatusBarItem *item)
     if (!isLocationEnabled         && [iconName isEqualToString:kLocationObsoleteKey]) { return YES; }
     if (!isLocationEnabled         && [iconName isEqualToString:kLocationKey]) { return YES; }
     if (!isRotationLockEnabled     && [iconName isEqualToString:kRotationLockKey]) { return YES; }
-    if (!isDoubleHeightEnabled     && [iconName isEqualToString:kDoubleHeightKey]) { return YES; }
+    //if (!isDoubleHeightEnabled     && [iconName isEqualToString:kDoubleHeightKey]) { return YES; }
     if (!isAirPlayEnabled          && [iconName isEqualToString:kAirPlayKey]) { return YES; }
     if (!isSiriEnabled             && [iconName isEqualToString:kSiriKey]) { return YES; }
     if (!isVpnEnabled              && [iconName isEqualToString:kVpnKey]) { return YES; }
@@ -280,7 +280,7 @@ static void LoadSettings()
     id playPref                   = [dict objectForKey:kPlayKey];
     id locationPref               = [dict objectForKey:kLocationKey];
     id rotationLockPref           = [dict objectForKey:kRotationLockKey];
-    id doubleHeightPref           = [dict objectForKey:kDoubleHeightKey];
+    //id doubleHeightPref           = [dict objectForKey:kDoubleHeightKey];
     id airPlayPref                = [dict objectForKey:kAirPlayKey];
     id siriPref                   = [dict objectForKey:kSiriKey];
     id vpnPref                    = [dict objectForKey:kVpnKey];
@@ -319,7 +319,7 @@ static void LoadSettings()
         isPlayEnabled = playPref ? [playPref boolValue] : YES;
         isLocationEnabled = locationPref ? [locationPref boolValue] : YES;
         isRotationLockEnabled = rotationLockPref ? [rotationLockPref boolValue] : YES;
-        isDoubleHeightEnabled = doubleHeightPref ? [doubleHeightPref boolValue] : YES;
+        //isDoubleHeightEnabled = doubleHeightPref ? [doubleHeightPref boolValue] : YES;
         isAirPlayEnabled = airPlayPref ? [airPlayPref boolValue] : YES;
         isSiriEnabled = siriPref ? [siriPref boolValue] : YES;
         isVpnEnabled = vpnPref ? [vpnPref boolValue] : YES;
@@ -347,7 +347,7 @@ static void LoadSettings()
         BOOL isTmpPlayEnabled = playPref ? [playPref boolValue] : YES;
         BOOL isTmpLocationEnabled = locationPref ? [locationPref boolValue] : YES;
         BOOL isTmpRotationLockEnabled = rotationLockPref ? [rotationLockPref boolValue] : YES;
-        BOOL isTmpDoubleHeightEnabled = doubleHeightPref ? [doubleHeightPref boolValue] : YES;
+        //BOOL isTmpDoubleHeightEnabled = doubleHeightPref ? [doubleHeightPref boolValue] : YES;
         BOOL isTmpAirPlayEnabled = airPlayPref ? [airPlayPref boolValue] : YES;
         BOOL isTmpSiriEnabled = siriPref ? [siriPref boolValue] : YES;
         BOOL isTmpVpnEnabled = vpnPref ? [vpnPref boolValue] : YES;
@@ -411,9 +411,9 @@ static void LoadSettings()
         } else if (isRotationLockEnabled != isTmpRotationLockEnabled) {
             isRotationLockEnabled = isTmpRotationLockEnabled;
             SetItemFromString(kRotationLockKey);
-        } else if (isDoubleHeightEnabled != isTmpDoubleHeightEnabled) {
-            isDoubleHeightEnabled = isTmpDoubleHeightEnabled;
-            SetItemFromString(kDoubleHeightKey);
+/*        } else if (isDoubleHeightEnabled != isTmpDoubleHeightEnabled) {*/
+/*            isDoubleHeightEnabled = isTmpDoubleHeightEnabled;*/
+/*            SetItemFromString(kDoubleHeightKey);*/
         } else if (isAirPlayEnabled != isTmpAirPlayEnabled) {
             isAirPlayEnabled = isTmpAirPlayEnabled;
             SetItemFromString(kAirPlayKey);
