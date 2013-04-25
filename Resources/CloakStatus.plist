@@ -53,9 +53,9 @@
         <key>detail</key>
         <string>PSListItemsController</string>
         <key>valuesDataSource</key>
-        <string>locales:</string>
+        <string>locales</string>
         <key>titlesDataSource</key>
-        <string>locales:</string>
+        <string>locales</string>
       </dict>
       <dict>
         <key>cell</key>

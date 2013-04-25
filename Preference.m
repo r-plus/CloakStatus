@@ -1,5 +1,4 @@
-#import <Preferences/Preferences.h>
-#import <libprefs/prefs.h>
+#import <filterPrefs.h>
 
 __attribute__((visibility("hidden")))
 @interface CloakStatusPSController : PSListController
@@ -10,23 +9,12 @@ __attribute__((visibility("hidden")))
 - (id)specifiers
 {
     if (!_specifiers) {
-        _specifiers = [[self loadSpecifiersFromPlistName:@"CloakStatus" target:self] retain];
-        NSMutableArray *removals = [NSMutableArray array];
-        for (id spec in _specifiers) {
-            if (![PSSpecifier environmentPassesPreferenceLoaderFilter:[spec propertyForKey:PLFilterKey]])
-                [removals addObject:spec];
-        }
-        if (removals.count > 0) {
-            NSMutableArray *newSpecifiers = [_specifiers mutableCopy];
-            [_specifiers release];
-            [newSpecifiers removeObjectsInArray:removals];
-            _specifiers = newSpecifiers;
-        }
+        _specifiers = FilteredSpecifiers([[self loadSpecifiersFromPlistName:@"CloakStatus" target:self] retain]);
     }
     return _specifiers;
 }
 
-- (NSArray *)locales:(id)arg
+- (NSArray *)locales
 {
     return [[NSLocale availableLocaleIdentifiers] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
