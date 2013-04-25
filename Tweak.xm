@@ -68,7 +68,7 @@ static BOOL isServiceEnabled;
 static BOOL isDataEnabled;
 static BOOL isBatteryEnabled;
 static BOOL isBatteryPercentEnabled;
-static BOOL isNotChargingEnabled;
+//static BOOL isNotChargingEnabled;
 static BOOL isBluetoothBatteryEnabled;
 static BOOL isBluetoothEnabled;
 static BOOL isTtyEnabled;
@@ -94,7 +94,7 @@ static NSString *kServiceKey = @"Service (Left)";
 static NSString *kDataKey = @"DataNetwork (Left)";
 static NSString *kBatteryKey = @"Battery (Right)";
 static NSString *kBatteryPercentKey = @"BatteryPercent (Right)";
-static NSString *kNotChargingKey = @"NotCharging (Right)";
+//static NSString *kNotChargingKey = @"NotCharging (Right)";
 static NSString *kBluetoothBatteryKey = @"BluetoothBattery (Right)";
 static NSString *kBluetoothKey = @"Bluetooth (Right)";
 static NSString *kTtyKey = @"Indicator:TTY (Right)";
@@ -167,7 +167,7 @@ static inline BOOL isDisabledStatus(UIStatusBarItem *item)
     if (!isDataEnabled             && [iconName isEqualToString:kDataKey]) { return YES; }
     if (!isBatteryEnabled          && [iconName isEqualToString:kBatteryKey]) { return YES; }
     if (!isBatteryPercentEnabled   && [iconName isEqualToString:kBatteryPercentKey]) { return YES; }
-    if (!isNotChargingEnabled      && [iconName isEqualToString:kNotChargingKey]) { return YES; }
+    //if (!isNotChargingEnabled      && [iconName isEqualToString:kNotChargingKey]) { return YES; }
     if (!isBluetoothBatteryEnabled && [iconName isEqualToString:kBluetoothBatteryKey]) { return YES; }
     if (!isBluetoothEnabled        && [iconName isEqualToString:kBluetoothKey]) { return YES; }
     if (!isTtyEnabled              && [iconName isEqualToString:kTtyKey]) { return YES; }
@@ -268,7 +268,7 @@ static void LoadSettings()
     id dataPref                   = [dict objectForKey:kDataKey];
     id batteryPref                = [dict objectForKey:kBatteryKey];
     id batteryPercentPref         = [dict objectForKey:kBatteryPercentKey];
-    id notChargingPref            = [dict objectForKey:kNotChargingKey];
+    //id notChargingPref            = [dict objectForKey:kNotChargingKey];
     id bluetoothBatteryPref       = [dict objectForKey:kBluetoothBatteryKey];
     id bluetoothPref              = [dict objectForKey:kBluetoothKey];
     id ttyPref                    = [dict objectForKey:kTtyKey];
@@ -307,7 +307,7 @@ static void LoadSettings()
         isDataEnabled = dataPref ? [dataPref boolValue] : YES;
         isBatteryEnabled = batteryPref ? [batteryPref boolValue] : YES;
         isBatteryPercentEnabled = batteryPercentPref ? [batteryPercentPref boolValue] : YES;
-        isNotChargingEnabled = notChargingPref ? [notChargingPref boolValue] : YES;
+        //isNotChargingEnabled = notChargingPref ? [notChargingPref boolValue] : YES;
         isBluetoothBatteryEnabled = bluetoothBatteryPref ? [bluetoothBatteryPref boolValue] : YES;
         isBluetoothEnabled = bluetoothPref ? [bluetoothPref boolValue] : YES;
         isTtyEnabled = ttyPref ? [ttyPref boolValue] : YES;
@@ -335,7 +335,7 @@ static void LoadSettings()
         BOOL isTmpDataEnabled = dataPref ? [dataPref boolValue] : YES;
         BOOL isTmpBatteryEnabled = batteryPref ? [batteryPref boolValue] : YES;
         BOOL isTmpBatteryPercentEnabled = batteryPercentPref ? [batteryPercentPref boolValue] : YES;
-        BOOL isTmpNotChargingEnabled = notChargingPref ? [notChargingPref boolValue] : YES;
+        //BOOL isTmpNotChargingEnabled = notChargingPref ? [notChargingPref boolValue] : YES;
         BOOL isTmpBluetoothBatteryEnabled = bluetoothBatteryPref ? [bluetoothBatteryPref boolValue] : YES;
         BOOL isTmpBluetoothEnabled = bluetoothPref ? [bluetoothPref boolValue] : YES;
         BOOL isTmpTtyEnabled = ttyPref ? [ttyPref boolValue] : YES;
@@ -378,9 +378,9 @@ static void LoadSettings()
         } else if (isBatteryPercentEnabled != isTmpBatteryPercentEnabled) {
             isBatteryPercentEnabled = isTmpBatteryPercentEnabled;
             SetItemFromString(kBatteryPercentKey);
-        } else if (isNotChargingEnabled != isTmpNotChargingEnabled) {
-            isNotChargingEnabled = isTmpNotChargingEnabled;
-            SetItemFromString(kNotChargingKey);
+/*        } else if (isNotChargingEnabled != isTmpNotChargingEnabled) {*/
+/*            isNotChargingEnabled = isTmpNotChargingEnabled;*/
+/*            SetItemFromString(kNotChargingKey);*/
         } else if (isBluetoothBatteryEnabled != isTmpBluetoothBatteryEnabled) {
             isBluetoothBatteryEnabled = isTmpBluetoothBatteryEnabled;
             SetItemFromString(kBluetoothBatteryKey);

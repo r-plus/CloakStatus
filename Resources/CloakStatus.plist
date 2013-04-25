@@ -220,6 +220,7 @@
         <key>PostNotification</key>
         <string>jp.r-plus.cloakstatus.settingschanged</string>
       </dict>
+      <!--
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
@@ -234,6 +235,7 @@
         <key>PostNotification</key>
         <string>jp.r-plus.cloakstatus.settingschanged</string>
       </dict>
+      -->
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
