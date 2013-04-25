@@ -224,10 +224,13 @@ static inline void DEBUG()
 
 static inline void SetItemFromString(NSString *string)
 {
-    // NOTE: 30 is hard-coding. Now 24 items exist on iOS 6.1
-    for (int i=0; i<30; i++) {
-        if ([IconNameFromItem([%c(UIStatusBarItem) itemWithType:i]) isEqualToString:string]) {
-            [[%c(SBStatusBarDataManager) sharedDataManager] setStatusBarItem:i enabled:(isDisabledStatus([%c(UIStatusBarItem) itemWithType:i]) ? NO : YES)];
+    // NOTE: 50 is hard-coding. Now 24 items exist on iOS 6.1
+    for (int i=0; i<50; i++) {
+        UIStatusBarItem *item = [%c(UIStatusBarItem) itemWithType:i];
+        if (!item)
+            break;
+        if ([IconNameFromItem(item) isEqualToString:string]) {
+            [[%c(SBStatusBarDataManager) sharedDataManager] setStatusBarItem:i enabled:(isDisabledStatus(item) ? NO : YES)];
             break;
         }
     }
