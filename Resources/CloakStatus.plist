@@ -77,7 +77,7 @@
         <key>label</key>
         <string>CloakStatus</string>
         <key>footerText</key>
-        <string>If always icon appearing you are not hoping, please respring.</string>
+        <string></string>
       </dict>
       <dict>
         <key>cell</key>
