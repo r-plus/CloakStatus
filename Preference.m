@@ -16,7 +16,8 @@ __attribute__((visibility("hidden")))
 
 - (NSArray *)locales
 {
-    return [[NSLocale availableLocaleIdentifiers] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    return [[NSLocale preferredLanguages] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    //return [[NSLocale availableLocaleIdentifiers] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 }
 
 @end
