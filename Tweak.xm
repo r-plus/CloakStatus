@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "Firmware.h"
+#import <debug.h>
 
 typedef struct { 
     BOOL itemIsEnabled[24]; 
@@ -30,10 +31,11 @@ typedef struct {
 } _rawData;
 
 
-@interface SBStatusBarDataManager
+@interface SBStatusBarDataManager : NSObject
 + (id)sharedDataManager;
 - (void)_updateTimeString;
 - (void)setStatusBarItem:(int)item enabled:(BOOL)enabled;
+- (void)updateStatusBarItem:(int)item;
 @end
 
 @interface UIStatusBarItem
@@ -42,6 +44,7 @@ typedef struct {
 - (id)indicatorName;  
 - (id)itemWithType:(int)type;
 - (NSString *)description;
++ (BOOL)typeIsValid:(NSInteger)arg1;
 @end
 
 @interface UIStatusBarItemView
@@ -222,7 +225,7 @@ static inline void DEBUG()
     }
 }
 
-static inline void SetItemFromString(NSString *string)
+static inline void DisableItemFromString(NSString *string)
 {
     // NOTE: 50 is hard-coding. Now 24 items exist on iOS 6.1
     for (int i=0; i<50; i++) {
@@ -230,7 +233,7 @@ static inline void SetItemFromString(NSString *string)
         if (!item)
             break;
         if ([IconNameFromItem(item) isEqualToString:string]) {
-            [[%c(SBStatusBarDataManager) sharedDataManager] setStatusBarItem:i enabled:(isDisabledStatus(item) ? NO : YES)];
+            [[%c(SBStatusBarDataManager) sharedDataManager] setStatusBarItem:i enabled:NO];
             break;
         }
     }
@@ -256,6 +259,22 @@ static inline void SetItemFromString(NSString *string)
     SetStatusBarDate(self, isDateTimeStatusBar);
 }
 %end
+
+static inline void UpdateAllItems()
+{
+    SBStatusBarDataManager *manager = [%c(SBStatusBarDataManager) sharedDataManager];
+    for (NSInteger i=0; i<50; i++) {
+        if ([%c(UIStatusBarItem) typeIsValid:i]) {
+            Log(@"%d is valid", i);
+            [manager updateStatusBarItem:i];
+        } else {
+            Log(@"%d is NON valid", i);
+            break;
+        }
+    }
+    // hard-coding: TimeItem will not appear by [manager updateStatusBarItem:0];
+    [manager setStatusBarItem:0 enabled:isTimeEnabled];
+}
 
 #define PREF_PATH @"/var/mobile/Library/Preferences/jp.r-plus.CloakStatus.plist"
 static void LoadSettings()
@@ -356,83 +375,109 @@ static void LoadSettings()
         BOOL isTmpThermalColorEnabled = thermalColorPref ? [thermalColorPref boolValue] : YES;
         if (isTimeEnabled != isTmpTimeEnabled) {
             isTimeEnabled = isTmpTimeEnabled;
-            SetItemFromString(kTimeKey);
+            if (!isTimeEnabled)
+                DisableItemFromString(kTimeKey);
         } else if (isLockEnabled != isTmpLockEnabled) {
             isLockEnabled = isTmpLockEnabled;
-            SetItemFromString(kLockKey);
+            if (!isLockEnabled)
+                DisableItemFromString(kLockKey);
         } else if (isQuitEnabled != isTmpQuitEnabled) {
             isQuitEnabled = isTmpQuitEnabled;
-            SetItemFromString(kQuitKey);
+            if (!isQuitEnabled)
+                DisableItemFromString(kQuitKey);
         } else if (isAirplaneEnabled != isTmpAirplaneEnabled) {
             isAirplaneEnabled = isTmpAirplaneEnabled;
-            SetItemFromString(kAirplaneKey);
+            if (!isAirplaneEnabled)
+                DisableItemFromString(kAirplaneKey);
         } else if (isSignalEnabled != isTmpSignalEnabled) {
             isSignalEnabled = isTmpSignalEnabled;
-            SetItemFromString(kSignalKey);
+            if (!isSignalEnabled)
+                DisableItemFromString(kSignalKey);
         } else if (isServiceEnabled != isTmpServiceEnabled) {
             isServiceEnabled = isTmpServiceEnabled;
-            SetItemFromString(kServiceKey);
+            if (!isServiceEnabled)
+                DisableItemFromString(kServiceKey);
         } else if (isDataEnabled != isTmpDataEnabled) {
             isDataEnabled = isTmpDataEnabled;
-            SetItemFromString(kDataKey);
+            if (!isDataEnabled)
+                DisableItemFromString(kDataKey);
         } else if (isBatteryEnabled != isTmpBatteryEnabled) {
             isBatteryEnabled = isTmpBatteryEnabled;
-            SetItemFromString(kBatteryKey);
+            if (!isBatteryEnabled)
+                DisableItemFromString(kBatteryKey);
         } else if (isBatteryPercentEnabled != isTmpBatteryPercentEnabled) {
             isBatteryPercentEnabled = isTmpBatteryPercentEnabled;
-            SetItemFromString(kBatteryPercentKey);
-/*        } else if (isNotChargingEnabled != isTmpNotChargingEnabled) {*/
-/*            isNotChargingEnabled = isTmpNotChargingEnabled;*/
-/*            SetItemFromString(kNotChargingKey);*/
+            if (!isBatteryPercentEnabled)
+                DisableItemFromString(kBatteryPercentKey);
+            /*
+        } else if (isNotChargingEnabled != isTmpNotChargingEnabled) {
+            isNotChargingEnabled = isTmpNotChargingEnabled;
+            DisableItemFromString(kNotChargingKey);
+            */
         } else if (isBluetoothBatteryEnabled != isTmpBluetoothBatteryEnabled) {
             isBluetoothBatteryEnabled = isTmpBluetoothBatteryEnabled;
-            SetItemFromString(kBluetoothBatteryKey);
+            if (!isBluetoothBatteryEnabled)
+                DisableItemFromString(kBluetoothBatteryKey);
         } else if (isBluetoothEnabled != isTmpBluetoothEnabled) {
             isBluetoothEnabled = isTmpBluetoothEnabled;
-            SetItemFromString(kBluetoothKey);
+            if (!isBluetoothEnabled)
+                DisableItemFromString(kBluetoothKey);
         } else if (isTtyEnabled != isTmpTtyEnabled) {
             isTtyEnabled = isTmpTtyEnabled;
-            SetItemFromString(kTtyKey);
+            if (!isTtyEnabled)
+                DisableItemFromString(kTtyKey);
         } else if (isAlarmEnabled != isTmpAlarmEnabled) {
             isAlarmEnabled = isTmpAlarmEnabled;
-            SetItemFromString(kAlarmKey);
+            if (!isAlarmEnabled)
+                DisableItemFromString(kAlarmKey);
         } else if (isPlusEnabled != isTmpPlusEnabled) {
             isPlusEnabled = isTmpPlusEnabled;
-            SetItemFromString(kPlusKey);
+            if (!isPlusEnabled)
+                DisableItemFromString(kPlusKey);
         } else if (isPlayEnabled != isTmpPlayEnabled) {
             isPlayEnabled = isTmpPlayEnabled;
-            SetItemFromString(kPlayKey);
+            if (!isPlayEnabled)
+                DisableItemFromString(kPlayKey);
         } else if (isLocationEnabled != isTmpLocationEnabled) {
             isLocationEnabled = isTmpLocationEnabled;
-            if (kCFCoreFoundationVersionNumber < kCFCoreFoundationVersionNumber_iOS_5_0)
-                SetItemFromString(kLocationObsoleteKey);
-            else
-                SetItemFromString(kLocationKey);
+            if (!isLocationEnabled)
+                DisableItemFromString(kCFCoreFoundationVersionNumber < kCFCoreFoundationVersionNumber_iOS_5_0 ? kLocationObsoleteKey : kLocationKey);
         } else if (isRotationLockEnabled != isTmpRotationLockEnabled) {
             isRotationLockEnabled = isTmpRotationLockEnabled;
-            SetItemFromString(kRotationLockKey);
-/*        } else if (isDoubleHeightEnabled != isTmpDoubleHeightEnabled) {*/
-/*            isDoubleHeightEnabled = isTmpDoubleHeightEnabled;*/
-/*            SetItemFromString(kDoubleHeightKey);*/
+            if (!isRotationLockEnabled)
+                DisableItemFromString(kRotationLockKey);
+            /*
+        } else if (isDoubleHeightEnabled != isTmpDoubleHeightEnabled) {
+            isDoubleHeightEnabled = isTmpDoubleHeightEnabled;
+            DisableItemFromString(kDoubleHeightKey);
+            */
         } else if (isAirPlayEnabled != isTmpAirPlayEnabled) {
             isAirPlayEnabled = isTmpAirPlayEnabled;
-            SetItemFromString(kAirPlayKey);
+            if (!isAirPlayEnabled)
+                DisableItemFromString(kAirPlayKey);
         } else if (isSiriEnabled != isTmpSiriEnabled) {
             isSiriEnabled = isTmpSiriEnabled;
-            SetItemFromString(kSiriKey);
+            if (!isSiriEnabled)
+                DisableItemFromString(kSiriKey);
         } else if (isVpnEnabled != isTmpVpnEnabled) {
             isVpnEnabled = isTmpVpnEnabled;
-            SetItemFromString(kVpnKey);
+            if (!isVpnEnabled)
+                DisableItemFromString(kVpnKey);
         } else if (isCallForwardEnabled != isTmpCallForwardEnabled) {
             isCallForwardEnabled = isTmpCallForwardEnabled;
-            SetItemFromString(kCallForwardKey);
+            if (!isCallForwardEnabled)
+                DisableItemFromString(kCallForwardKey);
         } else if (isActivityEnabled != isTmpActivityEnabled) {
             isActivityEnabled = isTmpActivityEnabled;
-            SetItemFromString(kActivityKey);
+            if (!isActivityEnabled)
+                DisableItemFromString(kActivityKey);
         } else if (isThermalColorEnabled != isTmpThermalColorEnabled) {
             isThermalColorEnabled = isTmpThermalColorEnabled;
-            SetItemFromString(kThermalColorKey);
+            if (!isThermalColorEnabled)
+                DisableItemFromString(kThermalColorKey);
         }
+
+        UpdateAllItems();
     }
 }
 
